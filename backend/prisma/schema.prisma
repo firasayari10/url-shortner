@@ -12,3 +12,9 @@ datasource db {
   provider = "postgresql"
 }
 
+model Url {
+  id        String   @id @default(cuid())
+  longUrl   String
+  shortCode String   @unique
+  createdAt DateTime @default(now())
+}
