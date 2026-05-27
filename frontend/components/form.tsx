@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useState} from 'react';
 import {Input} from '@/components/ui/input';
 import {Button} from '@/components/ui/button'
@@ -17,9 +17,33 @@ export default function UrlForm({ onShortned}:FormProps)
     const[longUrl , setLongUrl] = useState('');
     const [result , setResult] = useState('');
     const [loading , setLoading ]=useState(false);
+    const [isValid, setIsValid] = useState<boolean | null>(null);
+    const [checking ,setChecking] = useState(false);
+
+    useEffect(()=>{
+        if(!longUrl)
+        {
+            return;
+        }
+
+
+        const timeout= setTimeout( async () => {
+            setChecking(true);
+            const  res= await fetch(`http://localhost:3001/check?url=${encodeURIComponent(longUrl)}`);
+            const data = await res.json();
+            setIsValid(data.valid);
+            setChecking(false);
+
+
+            
+        }, 500);
+
+        return ()=> clearTimeout(timeout);
+    },[longUrl])
+
     async function handleSubmit()
     {
-        if(!longUrl) return ;
+        if(!longUrl || isValid) return ;
         setLoading(true);
 
 
@@ -39,6 +63,7 @@ export default function UrlForm({ onShortned}:FormProps)
         setLoading(false);
         onShortned();
        
+        setIsValid(null)
     }
 
 
@@ -48,16 +73,44 @@ export default function UrlForm({ onShortned}:FormProps)
                 <Input  
                 placeholder='Coller votre URL ici !' 
                 value={longUrl}
-                onChange={(e)=>setLongUrl(e.target.value)}/>
+                onChange={
+                    (e)=>{
+                        setLongUrl(e.target.value);
+                        if(!e.target.value)
+                        {
+                            setIsValid(null);
+                        }
+                    }
+                    }/>
 
                 <Button onClick={handleSubmit} disabled={loading}>
-                    {loading ? ' raccourcissement ' : 'raccourcir '}
+                    {loading ? ' raccourcissement en cours ' : 'raccourcir '}
 
                 </Button>
 
 
             </div>
+            {checking && (
+                <p className="text-sm text-muted-foreground ">
+                    Verification de l url  ...
 
+                </p>
+
+            )}
+            {
+                !checking && isValid == false && longUrl && (
+                    <p className="text-sm text-destructive">
+                        Url non valide
+                    </p>
+                )
+            }
+            {
+                !checking && isValid == true && longUrl && (
+                    <p className="text-sm text-green-400">
+                        Url valide 
+                    </p>
+                )
+            }
             {
                 result && (
                     <p className="text-sm text-muted-foreground">
