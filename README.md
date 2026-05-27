@@ -2,14 +2,14 @@
 
 # Stack 
 
-Backend : NestJS
-Frontend : Next.js ou React
-Base de donn´ees : Prisma + PostgreSQL
-Outils : Docker, TypeScript, Git
+Backend : NestJS  
+Frontend : Next.js ou React  
+Base de donn´ees : Prisma + PostgreSQL  
+Outils : Docker, TypeScript, Git  
 
 
 # Prerequis 
-docker 
+docker   
 bun 
 
 # Etapes a suivre pour lancer le projet 
