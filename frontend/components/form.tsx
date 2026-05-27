@@ -21,7 +21,7 @@ export default function UrlForm({ onShortned}:FormProps)
     const [checking ,setChecking] = useState(false);
 
     useEffect(()=>{
-        if(!longUrl)
+        if(!longUrl )
         {
             return;
         }
@@ -43,7 +43,7 @@ export default function UrlForm({ onShortned}:FormProps)
 
     async function handleSubmit()
     {
-        if(!longUrl || isValid) return ;
+        if(!longUrl || !isValid) return ;
         setLoading(true);
 
 
@@ -62,7 +62,7 @@ export default function UrlForm({ onShortned}:FormProps)
         setLongUrl('');
         setLoading(false);
         onShortned();
-       
+       setChecking(false)
         setIsValid(null)
     }
 
@@ -76,6 +76,7 @@ export default function UrlForm({ onShortned}:FormProps)
                 onChange={
                     (e)=>{
                         setLongUrl(e.target.value);
+                        setResult(''); 
                         if(!e.target.value)
                         {
                             setIsValid(null);
@@ -83,7 +84,7 @@ export default function UrlForm({ onShortned}:FormProps)
                     }
                     }/>
 
-                <Button onClick={handleSubmit} disabled={loading}>
+                <Button onClick={handleSubmit} disabled={loading || !isValid || checking}>
                     {loading ? ' raccourcissement en cours ' : 'raccourcir '}
 
                 </Button>
