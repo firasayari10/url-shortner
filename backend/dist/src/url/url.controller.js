@@ -28,6 +28,10 @@ let UrlController = class UrlController {
         const urls = await this.urlService.getAllUrls();
         return urls;
     }
+    async checkUrl(url) {
+        const isValid = await this.urlService.checkUrl(url);
+        return { valid: isValid };
+    }
     async redirect(shortCode, res) {
         const url = await this.urlService.getOriginalUrl(shortCode);
         return res.redirect(url.longUrl);
@@ -47,6 +51,13 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], UrlController.prototype, "getAllUrls", null);
+__decorate([
+    (0, common_1.Get)('check'),
+    __param(0, (0, common_1.Query)('url')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], UrlController.prototype, "checkUrl", null);
 __decorate([
     (0, common_1.Get)(':shortCode'),
     __param(0, (0, common_1.Param)('shortCode')),

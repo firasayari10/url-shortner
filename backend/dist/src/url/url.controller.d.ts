@@ -15,5 +15,8 @@ export declare class UrlController {
         shortCode: string;
         createdAt: Date;
     }[]>;
+    checkUrl(url: string): Promise<{
+        valid: boolean;
+    }>;
     redirect(shortCode: string, res: Response): Promise<void>;
 }

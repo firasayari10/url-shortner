@@ -21,4 +21,5 @@ export declare class UrlService {
         shortCode: string;
         createdAt: Date;
     }[]>;
+    checkUrl(url: string): Promise<boolean>;
 }

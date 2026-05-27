@@ -4,7 +4,8 @@ import {
     Post,
     Body,
     Param,
-    Res
+    Res,
+    Query
 
 } from '@nestjs/common' ;
 
@@ -29,6 +30,13 @@ export class UrlController {
         return urls ;
     }
 
+    @Get('check')
+    async checkUrl(@Query('url') url:string)
+    {
+        const isValid = await this.urlService.checkUrl(url);
+        return {valid:isValid}
+    }
+    
     @Get(':shortCode')
     async redirect(@Param('shortCode') shortCode:string ,  @Res() res:Response)
     {
@@ -36,6 +44,8 @@ export class UrlController {
         return res.redirect(url.longUrl)
 
     }
+
+    
 
     
 }
